@@ -1,0 +1,62 @@
+\documentclass[a4paper,11pt]{article}
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage{lmodern}
+\usepackage{biblatex}
+\usepackage{hyperref}
+\usepackage{cleveref}
+\usepackage{graphicx}
+\addbibresource{assets/bib.bib}
+
+\title{What are the main hurdles to the adoption of foveated rendering in HMDs?}
+\author{Joe Down}
+\date{April 11, 2024}
+
+\begin{document}
+
+\maketitle
+%\tableofcontents
+
+\section{Background}
+Humans direct their gaze towards an object by rotating their eyes such that light reflected by the object viewed falls on the eye's fovea\cite{levoy1990gaze}. This is a small region at the centre of the retina with increased cone density\cite{pumphrey1948theory}: the photoreceptor cells of the eye which send signals to brain when stimulated by light\cite{arendt2003evolution}. Additionally, the brain is structured to process this information with a space-variant resolution dedicating most resources to the fovea region\cite{weber2009implementations}. These conditions mean that spatial acuity is strongest for objects viewed within this area\cite{levoy1990gaze}.
+
+In virtual reality systems, it has been found that delay in frame delivery results in motion sickness, discomfort\cite{waltemate2016impact}, and decreased performance in certain motor tasks\cite{raaen2015measuring}. Since rendering requirements continue to increase as screen reolutions and scene complexities increase, it remains difficult for modern computing devices to render complex VR scenes with low visual latency\cite{wang2023foveated}. Foveated rendering has frequently been proposed as a technique to reduce frame render times and help mitigate this problem. It aims to, in one of a few ways, reduce render quality for parts of a VR scene in the periphery and/or increase render quality within the foveal view\cite{weier2016foveated}, exploiting the eye's space-variant resolution. \textcite{mohanto2022integrative} specify a range of subcategories for render quality reductions, all falling within 4 main subcategories: adaptive resolution (i.e. render the periphery with lower resolution or some other form of reduced sampling), geometric simplification (i.e. render objects with a less detailed model in the periphery), shading simplification/chromatic degeneration (i.e. simplify lighting simulation for pixels in the periphery), and spatio-temporal deterioration (i.e. partially reusing parts of the frame in the periphery to avoid having to re-render the entire view at each refresh).
+
+\begin{figure}
+  \begin{center}
+    \includegraphics[width=\textwidth]{assets/pipeline}
+    \caption{High level foveated rendering pipeline}
+    \label{fig:pipeline}
+  \end{center}
+\end{figure}
+
+To understand existing limitations, a high-level structure of a foveated rendering pipeline needs to be defined. There are two main types of foveated rendering pipeline with slightly different structures: static, and dynamic. Dynamic foveated rendering requires some form of eye tracking capability within the HMD to determine which part of the stereoscopic displays the corresponding eye is directed towards. In software, frames must be received from this eye tracking device, and processed using some algorithm to determine where the eye is directed within a scene and/or on the physical display. The program being used must then be able to take this information and use it to in some way change how the scene is rendered. The rendered image must then be sent back to the headset to be displayed, all within a short enough timeframe to avoid noticeable visual latency. Static foveated rendering is mostly the same regarding the software implementation, however rather than requiring eye tracking hardware and processing, it simply assumes the fovea region is in the centre of each display and performs the rendering optimisations accordingly. This is not a realistic model, but will lead to performance gains at the cost of likely noticeable quality loss when the user averts their gaze from the centre. A summary of this pipeline can be viewed in \cref{fig:pipeline}.
+
+Static foveated rendering has been used by certain applications with non specialised hardware for years now. Dynamic foveated rendering has only started to become more common within the past few years, as increasingly mainstream HMDs such as PSVR2\cite{} and Apple Vision Pro\cite{} have been released with eye tracking functionality. The following sections aim to address why dynamic foveated rendering adoption is not yet ubiquitous across all HMDs, and identify shortcomings with existing implementations of both types of foveated rendering.
+
+\section{Software Limitations}
+\subsection{Time Limitations}
+Most software limitations relate to the time taken to perform all of the foveated rendering process and optimisations. If this cannot be done in a shorter amount of time than just rendering an unchanged frame, then the entire process is redundant. In this section, issues will be broken down in the order of the dynamic foveated rendering pipeline as defined in \cref{fig:pipeline}. Difficulties faced will be similar for static foveated rendering, ignoring parts relating to eye tracking.
+
+The first time-based software consideration is regarding the processing of eye tracking data from a sensor to determine gaze position. This is often performed using a trained machine learning model. TODO FINISH
+
+The second time-based consideration is regarding the gaze optimised rendering of the scene. TODO FINISH THIS BIT
+
+\subsection{Implementation Difficulties}
+
+\section{Hardware Limitations}
+\subsection{Time Limitations}
+\subsection{Implementation Difficulties}
+A significant hardware limitation is simply adoption. Since only very few headsets currently implement eye tracking of any sort, there is little motivation for developers to implement foveated rendering support if there is not a significant enough user base.
+
+\section{Hardware/Software Interaction Limitations}
+
+\section{Legal Limitations}
+
+\section{User Perception}
+
+\section{Conclusion}
+
+\printbibliography
+
+\end{document}
