@@ -1,0 +1,51 @@
+<mxfile host="Electron" modified="2024-04-05T23:36:45.198Z" agent="Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) draw.io/24.1.0 Chrome/120.0.6099.109 Electron/28.1.0 Safari/537.36" etag="OzOjBrmWHislBeD3huSt" version="24.1.0" type="device">
+  <diagram name="Page-1" id="2j_PxcGI_CUneSBnO5AT">
+    <mxGraphModel dx="327" dy="661" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="827" pageHeight="1169" math="0" shadow="0">
+      <root>
+        <mxCell id="0" />
+        <mxCell id="1" parent="0" />
+        <mxCell id="FBd6md0-VYgbWEImdvyW-2" value="Dynamic Foveated Rendering" style="swimlane;whiteSpace=wrap;html=1;" parent="1" vertex="1">
+          <mxGeometry x="40" y="360" width="720" height="160" as="geometry">
+            <mxRectangle y="440" width="200" height="30" as="alternateBounds" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="FBd6md0-VYgbWEImdvyW-3" value="Static Foveated Rendering" style="swimlane;whiteSpace=wrap;html=1;" parent="FBd6md0-VYgbWEImdvyW-2" vertex="1">
+          <mxGeometry x="360" y="40" width="360" height="240" as="geometry" />
+        </mxCell>
+        <mxCell id="nMLtkbF6CpyZ47OBJDI6-3" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=0.5;exitY=0;exitDx=0;exitDy=0;entryX=0.5;entryY=1;entryDx=0;entryDy=0;" edge="1" parent="FBd6md0-VYgbWEImdvyW-3" source="FBd6md0-VYgbWEImdvyW-9" target="FBd6md0-VYgbWEImdvyW-7">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="FBd6md0-VYgbWEImdvyW-9" value="Centre of display position" style="rounded=1;whiteSpace=wrap;html=1;" parent="FBd6md0-VYgbWEImdvyW-3" vertex="1">
+          <mxGeometry x="40" y="160" width="120" height="40" as="geometry" />
+        </mxCell>
+        <mxCell id="nMLtkbF6CpyZ47OBJDI6-6" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=1;exitY=0.5;exitDx=0;exitDy=0;entryX=0;entryY=0.5;entryDx=0;entryDy=0;" edge="1" parent="FBd6md0-VYgbWEImdvyW-3" source="FBd6md0-VYgbWEImdvyW-7" target="nMLtkbF6CpyZ47OBJDI6-4">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="FBd6md0-VYgbWEImdvyW-7" value="Render gaze optimised scene" style="rounded=1;whiteSpace=wrap;html=1;" parent="FBd6md0-VYgbWEImdvyW-3" vertex="1">
+          <mxGeometry x="40" y="40" width="120" height="40" as="geometry" />
+        </mxCell>
+        <mxCell id="nMLtkbF6CpyZ47OBJDI6-4" value="Display in headset" style="rounded=1;whiteSpace=wrap;html=1;" vertex="1" parent="FBd6md0-VYgbWEImdvyW-3">
+          <mxGeometry x="203" y="40" width="120" height="40" as="geometry" />
+        </mxCell>
+        <mxCell id="FBd6md0-VYgbWEImdvyW-4" value="Acquire eye tracking data&lt;div&gt;using sensor&lt;/div&gt;" style="rounded=1;whiteSpace=wrap;html=1;" parent="FBd6md0-VYgbWEImdvyW-2" vertex="1">
+          <mxGeometry x="40" y="80" width="160" height="40" as="geometry" />
+        </mxCell>
+        <mxCell id="FBd6md0-VYgbWEImdvyW-5" value="Determine gaze position" style="rounded=1;whiteSpace=wrap;html=1;" parent="FBd6md0-VYgbWEImdvyW-2" vertex="1">
+          <mxGeometry x="240" y="80" width="80" height="40" as="geometry" />
+        </mxCell>
+        <mxCell id="FBd6md0-VYgbWEImdvyW-6" value="" style="endArrow=classic;html=1;rounded=0;exitX=1;exitY=0.5;exitDx=0;exitDy=0;entryX=0;entryY=0.5;entryDx=0;entryDy=0;" parent="FBd6md0-VYgbWEImdvyW-2" source="FBd6md0-VYgbWEImdvyW-4" target="FBd6md0-VYgbWEImdvyW-5" edge="1">
+          <mxGeometry width="50" height="50" relative="1" as="geometry">
+            <mxPoint x="390" y="10" as="sourcePoint" />
+            <mxPoint x="440" y="-40" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="FBd6md0-VYgbWEImdvyW-8" value="" style="endArrow=classic;html=1;rounded=0;exitX=1;exitY=0.5;exitDx=0;exitDy=0;entryX=0;entryY=0.5;entryDx=0;entryDy=0;" parent="FBd6md0-VYgbWEImdvyW-2" source="FBd6md0-VYgbWEImdvyW-5" target="FBd6md0-VYgbWEImdvyW-7" edge="1">
+          <mxGeometry width="50" height="50" relative="1" as="geometry">
+            <mxPoint x="130" y="110" as="sourcePoint" />
+            <mxPoint x="170" y="110" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+      </root>
+    </mxGraphModel>
+  </diagram>
+</mxfile>
