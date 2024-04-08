@@ -49,7 +49,7 @@ The second time-based (software) consideration is regarding the processing of ey
 The third time-based (based) consideration is regarding the gaze optimised rendering of the scene. TODO FINISH THIS BIT
 
 \subsection{Displaying in Headset}
-The final time-based (based) consideration is regarding displaying the image in the headset. Since this must be performed even when not performing foveated rendering it presumably is not a source of problems. I was unable to find any literature referencing foveated rendering specific difficulties with this step (CHECK THIS!!). TODO FINISH THIS BIT
+The final time-based (based) consideration is regarding displaying the image in the headset. Since this must be performed even when not performing foveated rendering it presumably is not a source of problems. I was unable to find any literature referencing foveated rendering specific difficulties with this step. WHAT IS A NORMAL LATENCY
 
 \begin{figure}
   \begin{center}
@@ -62,10 +62,14 @@ The final time-based (based) consideration is regarding displaying the image in 
 \section{Other Software Limitations}
 A significant hardware limitation is simply adoption. Since only very few headsets currently implement eye tracking of any sort, there is little motivation for developers to implement foveated rendering support if there is not a significant enough user base.
 
+Another potential issue is with conflicting implementation standards for gaze tracking. OpenXR provides extensions for gaze interaction extensions \cite{xr_gaze}, which is implemented by the Unity engine in the XR Interaction Toolkit \cite{xr_gaze_unity} and Unreal engine through the OpenXREyeTracker plugin\cite{xr_gaze_unreal}. This would seem to imply some sort of standardisation, however I was unable to find clear documentation for how these plugins can be used for foveated rendering. Unity provides the FoveatedRenderingMode render flag\cite{unity_fove}, however this is not well documented and I couldn't determine whether this is dynamic or static foveated rendering. Vendor specific dynamic foveated rendering Unity implementations seem to exist for Meta Quest Pro\cite{meta_unity} and Vive Pro Eye\cite{vive_unity}, but these will work only for those specific headsets. Additionally, not all headsets support the OpenXR standard at all such as Apple Vision Pro and PSVR\cite{openxr_conform}. All of these obstacles would seem to make implementation of foveated rendering for a cross-platform application a significant undertaking.
+
 \section{Other Hardware Limitations}
 A significant hardware limitation is simply adoption. Since only very few headsets currently implement eye tracking of any sort, there is little motivation for developers to implement foveated rendering support if there is not a significant enough user base.
 
 COST
+
+EYE TRACKING ACCURACY
 
 \section{User Perception}
 
