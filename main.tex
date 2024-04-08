@@ -36,14 +36,19 @@ To understand existing limitations, a high-level structure of a foveated renderi
 Static foveated rendering has been used by certain applications with non specialised hardware for years now. Dynamic foveated rendering has only started to become more common within the past few years, as increasingly mainstream HMDs such as PSVR2\cite{} and Apple Vision Pro\cite{} have been released with eye tracking functionality. The following sections aim to address why dynamic foveated rendering adoption is not yet ubiquitous across all HMDs, and identify shortcomings with existing implementations of both types of foveated rendering.
 
 \section{Time Limitations}
-Most limitations relate to the time taken to perform all of the foveated rendering process and optimisations. If this cannot be done in a shorter amount of time than just rendering an unchanged frame, then the entire process is redundant as visual latency has been worsened. Additionally, with dynamic foveated rendering, if the foveated region cannot be updated with low enough latency, the issue shown in \cref{fig:eye} will occur where the user noticeably looks into the lower quality region of the scene after large, rapid eye movements (saccades). \textcite{albert2017latency} suggest gaze tracking latency for foveation of any level becomes difficult to notice with less than 50-70ms of latency, while less aggressive foveation could be tolerated with latencies up to 150ms. In this section, issues will be broken down in the order of the dynamic foveated rendering pipeline as defined in \cref{fig:pipeline}. Difficulties faced will be similar for static foveated rendering, ignoring parts relating to eye tracking.
+Most limitations relate to the time taken to perform all of the foveated rendering process and optimisations. If this cannot be done in a shorter amount of time than just rendering an unchanged frame, then the entire process is redundant as visual latency has been worsened. Additionally, with dynamic foveated rendering, if the foveated region cannot be updated with low enough latency, the issue shown in \cref{fig:eye} will occur where the user noticeably looks into the lower quality region of the scene after large, rapid eye movements (saccades). \textcite{albert2017latency} suggest gaze tracking latency for foveation of any level is unnoticeable with 20-40ms latency, becomes difficult to notice with less than 50-70ms of latency, while less aggressive foveation could be tolerated with latencies up to 150ms. \textcite{li2020optical} similarly suggest an upper bound of 50ms latecy, while no paper on the topic seems to aim for a latency below 14ms\cite{koskela2018instantaneous}. In this section, issues will be broken down in the order of the dynamic foveated rendering pipeline as defined in \cref{fig:pipeline}. Difficulties faced will be similar for static foveated rendering, ignoring parts relating to eye tracking.
+\subsection{Eye Tracking Sensor}
+The first time-based (hardware) consideration is the time taken to acquire sensor data for eye tracking. \textcite{stein2021comparison} performed experiments to determine eye tracking delays for three headsets with eye tracking capabilities: FOVE-0, Varjo VR-1, and the HTC Vive Pro Eye. They found that the delay before the eye movement data became available ranged from between 15-52ms. Given the previously described latency requirements for unnoticeable gaze tracking, this leaves little time to process, render, and display within the 20-40ms available. It does leave some room however for less aggressive foveation possible with 50-70ms latency. This suggests that perhaps foveated rendering has not yet become ubiquitous due to current hardware latency difficulties in existing, expensive, headsets.
 
-The first time-based (hardware) consideration is the time taken to acquire sensor data for eye tracking. TODO FINISH
+\textcite{stein2021comparison} also test the EyeLink 1000 eye tracker, an external webcam-like device capable of sampling at 1000HZ. From the same experimental setup this had a measurable delay of 0ms, suggesting significant room for improvement if this technology can be miniaturised. FINISH THIS
 
+\subsection{Eye Tracking Processing}
 The second time-based (software) consideration is regarding the processing of eye tracking data from a sensor to determine gaze position. This is often performed using a trained machine learning model. TODO FINISH
 
+\subsection{Scene Rendering}
 The third time-based (based) consideration is regarding the gaze optimised rendering of the scene. TODO FINISH THIS BIT
 
+\subsection{Displaying in Headset}
 The final time-based (based) consideration is regarding displaying the image in the headset. Since this must be performed even when not performing foveated rendering it presumably is not a source of problems. I was unable to find any literature referencing foveated rendering specific difficulties with this step (CHECK THIS!!). TODO FINISH THIS BIT
 
 \begin{figure}
@@ -59,6 +64,8 @@ A significant hardware limitation is simply adoption. Since only very few headse
 
 \section{Other Hardware Limitations}
 A significant hardware limitation is simply adoption. Since only very few headsets currently implement eye tracking of any sort, there is little motivation for developers to implement foveated rendering support if there is not a significant enough user base.
+
+COST
 
 \section{User Perception}
 
