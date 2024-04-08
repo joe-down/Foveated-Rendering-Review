@@ -60,15 +60,16 @@ The final time-based (based) consideration is regarding displaying the image in 
 \end{figure}
 
 \section{Other Software Limitations}
-A significant hardware limitation is simply adoption. Since only very few headsets currently implement eye tracking of any sort, there is little motivation for developers to implement foveated rendering support if there is not a significant enough user base.
-
+\subsection{Implementation Standards}
 Another potential issue is with conflicting implementation standards for gaze tracking. OpenXR provides extensions for gaze interaction extensions \cite{xr_gaze}, which is implemented by the Unity engine in the XR Interaction Toolkit \cite{xr_gaze_unity} and Unreal engine through the OpenXREyeTracker plugin\cite{xr_gaze_unreal}. This would seem to imply some sort of standardisation, however I was unable to find clear documentation for how these plugins can be used for foveated rendering. Unity provides the FoveatedRenderingMode render flag\cite{unity_fove}, however this is not well documented and I couldn't determine whether this is dynamic or static foveated rendering. Vendor specific dynamic foveated rendering Unity implementations seem to exist for Meta Quest Pro\cite{meta_unity} and Vive Pro Eye\cite{vive_unity}, but these will work only for those specific headsets. Additionally, not all headsets support the OpenXR standard at all such as Apple Vision Pro and PSVR\cite{openxr_conform}. All of these obstacles would seem to make implementation of foveated rendering for a cross-platform application a significant undertaking.
 
 \section{Other Hardware Limitations}
+\subsection{Adoption}
 A significant hardware limitation is simply adoption. Since only very few headsets currently implement eye tracking of any sort, there is little motivation for developers to implement foveated rendering support if there is not a significant enough user base.
 
-COST
-
+\subsection{Cost}
+Another large hardware limitation is the cost of eye tracking hardware. I struggled to find any cost breakdowns for the required hardware. An eye tracker add-on for the Vive Focus 3 is sold for \$250\cite{eye_cost_vive}, while a selection of headsets with eye tracking (and further ``premium'' features) currently cost: \$550 (PSVR2\cite{psvr_price}), \$3500 (Apple Vision Pro\cite{vision_pro_price}), \$1500 (Meta Quest Pro\cite{quest_pro_price}), \$1600 (Vive Pro Eye\cite{vive_pro_eye}), \$3990 (Varjo XR-4\cite{varjo_price}). These factors would seem to imply costs remain quite high for this feature, perhaps out of reach for the \$500\cite{quest_three_price} market of a product such as the Meta Quest 3 (PSVR2 is similar in price but also requires a \$500 PlayStation 5 console\cite{psfive_price}).
+\subsection{Eye Tracking Accuracy}
 EYE TRACKING ACCURACY
 
 \section{User Perception}
