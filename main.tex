@@ -7,6 +7,7 @@
 \usepackage{cleveref}
 \usepackage{graphicx}
 \usepackage{svg}
+\usepackage[margin=1.5in]{geometry}
 \addbibresource{assets/bib.bib}
 
 \title{What are the main hurdles to the adoption of foveated rendering in HMDs?}
@@ -41,23 +42,28 @@ In virtual reality systems, it has been found that delay in frame delivery resul
 
 To understand existing limitations, a high-level structure of a foveated rendering pipeline needs to be defined. There are two main types of foveated rendering pipeline with slightly different structures: static, and dynamic. Dynamic foveated rendering requires some form of eye tracking capability within the HMD to determine which part of the stereoscopic displays the corresponding eye is directed towards. In software, frames must be received from this eye tracking device, and processed using some algorithm to determine where the eye is directed within a scene and/or on the physical display. The program being used must then be able to take this information and use it to in some way change how the scene is rendered. The rendered image must then be transmitted back to the headset and displayed, all within a short enough timeframe to avoid noticeable visual latency. Static foveated rendering is mostly the same regarding the software implementation, however rather than requiring eye tracking hardware and processing, it simply assumes the fovea region is in the centre of each display and performs the rendering optimisations accordingly. This is not a realistic model, but will lead to performance gains at the cost of likely noticeable quality loss when the user averts their gaze from the centre. A summary of this pipeline can be viewed in \cref{fig:pipeline}.
 
-Static foveated rendering has been used by certain applications with non specialised hardware for years now. Dynamic foveated rendering has only started to become more common within the past few years, as increasingly mainstream HMDs such as PSVR2\cite{vr2_fove} and Apple Vision Pro\cite{vision_pro_announce} have been released with eye tracking functionality. The following sections aim to address why dynamic foveated rendering adoption is not yet ubiquitous across all HMDs, and identify shortcomings with existing implementations of both types of foveated rendering. First I will address the hardware and software latency requirements, followed by other software requirements, hardware requirements, and usability requirements.
+\section{Proposal}
+Static foveated rendering has been used by certain applications with non specialised hardware for years now. Dynamic foveated rendering has only started to become more common within the past few years, as increasingly mainstream HMDs such as PSVR2\cite{vr2_fove} and Apple Vision Pro\cite{vision_pro_announce} have been released with eye tracking functionality. The following sections aim to address why dynamic foveated rendering adoption is not yet ubiquitous across all HMDs, and identify shortcomings with existing implementations of both types of foveated rendering. First I will address the hardware and software latency requirements, followed by other software requirements, hardware requirements, and usability requirements. I believe that the main obstacles relate to the visual latency resulting from acquiring eye tracking data from a sensor and performing gaze processing, the current lack of clear implementation standards for gaze tracking, the lack of reference dynamic foveated rendering implementations in common engines, the high costs for HMDs with eye tracking hardware, and the lack of mainstream adoption of HMDs with appropriate hardware to justify a userbase.
 
 \section{Time Limitations}
 Most limitations relate to the time taken to perform all of the foveated rendering process and optimisations. If this cannot be done in a shorter amount of time than just rendering an unchanged frame, then the entire process is redundant as visual latency has been worsened. Additionally, with dynamic foveated rendering, if the foveated region cannot be updated with low enough latency, the issue shown in \cref{fig:eye} will occur where the user noticeably looks into the lower quality region of the scene after large, rapid eye movements (saccades). \textcite{albert2017latency} suggest gaze tracking latency for foveation of any level is unnoticeable with 20-40ms latency, becomes difficult to notice with less than 50-70ms of latency, while less aggressive foveation could be tolerated with latencies up to 150ms. \textcite{li2020optical} similarly suggest an upper bound of 50ms latecy, while no paper on the topic seems to aim for a latency below 14ms\cite{koskela2018instantaneous}. In this section, issues will be broken down in the order of the dynamic foveated rendering pipeline as defined in \cref{fig:pipeline}. Difficulties faced will be similar for static foveated rendering, ignoring parts relating to eye tracking.
-\subsection{Eye Tracking Sensor}
-The first time-based (hardware) consideration is the time taken to acquire sensor data for eye tracking. \textcite{stein2021comparison} performed experiments to determine eye tracking delays for three headsets with eye tracking capabilities: FOVE-0, Varjo VR-1, and the HTC Vive Pro Eye. They found that the delay before the eye movement data became available ranged from between 15-52ms. Given the previously described latency requirements for unnoticeable gaze tracking, this leaves little time to process, render, and display within the 20-40ms available. It does leave some room however for less aggressive foveation possible with 50-70ms latency. This suggests that perhaps foveated rendering has not yet become ubiquitous due to current hardware latency difficulties in existing, expensive, headsets.
+
+\subsection{Eye Tracking Sensor and Gaze Processing}
+The first time-based (hardware) consideration is the time taken to acquire sensor data for eye tracking and then process this data to determine gaze position. \textcite{stein2021comparison} performed experiments to determine eye tracking delays for three headsets with eye tracking capabilities: FOVE-0, Varjo VR-1, and the HTC Vive Pro Eye. The delay is the time between an eye movement and the gaze data becoming available for usage. They found that the delay before the eye movement data became available ranged from between 15-52ms. Given the previously described latency requirements for unnoticeable gaze tracking, this leaves little time to process, render, and display within the 20-40ms available. It does leave some room however for less aggressive foveation possible with 50-70ms latency. This suggests that perhaps foveated rendering has not yet become ubiquitous due to current hardware latency difficulties in existing, expensive, headsets.
 
 \textcite{stein2021comparison} also test the EyeLink 1000 eye tracker, an external webcam-like device capable of sampling at 1000HZ. From the same experimental setup this had a measurable delay of 0ms, suggesting significant room for improvement if this technology can be miniaturised. I was unable to find gaze delay data for newer headsets so better results may already be present, but these headsets remain expensive.
 
-\subsection{Gaze Processing}
-The second time-based (software) consideration is regarding the processing of eye tracking data from a sensor to determine gaze position. This is often performed using a trained machine learning model. TODO FINISH
-
 \subsection{Scene Rendering Optimisation}
-The third time-based (based) consideration is regarding the gaze optimised rendering of the scene. TODO FINISH THIS BIT
+\label{scene_rendering_optim}
+The next time-based (based) consideration is regarding the gaze optimised rendering of the scene. Various experiments indicate successful results in accelerated rendering. \textcite{meng2018kernel} demonstrate at least 2x framerates when using their kernel foveated rendering pipeline for rendering with decreased resolution in the peripheral (adaptive resolution in \cref{fig:types}). \textcite{guenter2012foveated} demonstrate 5-6x performance increases by collecting fewer samples for antialiasing in the peripheral view (shading simplification in \cref{fig:types}). \textcite{weier2016foveated} demonstrate at least 1.46x performance increases using a reprojection technique which recycles picels in the peripheral (spatio-temporal deterioration in \cref{fig:types}). I identified a few papers presenting geometric simplification techniques which claim improved performance, though without clearly presented figures, such as \textcite{tiwary2020accelerated,zheng2018perceptual}
+
+Overall it seems that many scene optimisation implementations have already been proposed and tested, proving significant performance gains can already be achieved with foveated rendering. Finding compelling scene rendering optimisations does not currently seem to be an obstacle to foveated rendering adoption.
 
 \subsection{Displaying in Headset}
-The final time-based (based) consideration is regarding displaying the image in the headset. Since this must be performed even when not performing foveated rendering it presumably is not a source of problems. I was unable to find any literature referencing foveated rendering specific difficulties with this step. WHAT IS A NORMAL LATENCY
+The final time-based (based) consideration is regarding displaying the image in the headset. Since this must be performed even when not performing foveated rendering it presumably is not a source of problems. I was unable to find any literature referencing foveated rendering specific difficulties with this step.
+
+\subsection{Summary}
+Generally it seems that the biggest obstacle for time optimisations is regarding the latency of acquiring and processing eye tracking data, which is currently difficult to achieve within comfort requirements. 
 
 \begin{figure}
   \begin{center}
@@ -69,11 +75,14 @@ The final time-based (based) consideration is regarding displaying the image in 
 
 \section{Other Software Limitations}
 \subsection{Implementation Standards}
+\label{standards}
 Another potential issue is with conflicting implementation standards for gaze tracking. OpenXR provides extensions for gaze interaction extensions \cite{xr_gaze}, which is implemented by the Unity engine in the XR Interaction Toolkit \cite{xr_gaze_unity} and Unreal engine through the OpenXREyeTracker plugin\cite{xr_gaze_unreal}. This would seem to imply some sort of standardisation, however I was unable to find clear documentation for how these plugins can be used for foveated rendering. Unity provides the FoveatedRenderingMode render flag\cite{unity_fove}, however this is not well documented and I couldn't determine whether this is dynamic or static foveated rendering. Vendor specific dynamic foveated rendering Unity implementations seem to exist for Meta Quest Pro\cite{meta_unity} and Vive Pro Eye\cite{vive_unity}, but these will work only for those specific headsets. Additionally, not all headsets support the OpenXR standard at all such as Apple Vision Pro and PSVR\cite{openxr_conform}. All of these obstacles would seem to make implementation of foveated rendering for a cross-platform application a significant undertaking.
 
 \subsection{Gaze Tracking Implementation}
+TODO
 
 \subsection{Scene Rendering Optimisation Implementation}
+As discussed in \cref{scene_rendering_optim}, a range of scene rendering optimisations have been successfully implemented and used in a research setting. Following on from \cref{standards}, a lack of standardised, cross platform implementations in the common engines is perhaps an obstacle to many developers which cannot justify implementing these techniques from scratch.
 
 \section{Other Hardware Limitations}
 \subsection{Adoption}
